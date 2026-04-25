@@ -10,7 +10,7 @@ model = pickle.load(open("model.pkl", "rb"))
 
 @app.route('/')
 def home():
-    return render_template("index.html")
+    return render_templates("index.html")
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -51,7 +51,7 @@ def predict():
 
         # If errors exist → show them
         if errors:
-            return render_template(
+            return render_templates(
                 'index.html',
                 prediction_text="<br>".join(errors),
                 form_data=form_data
@@ -73,14 +73,14 @@ def predict():
         else:
             category = "High Price"
 
-        return render_template(
+        return render_templates(
             'index.html',
             prediction_text=f"Predicted Price: {formatted_price} ({category})",
             form_data=form_data
         )
 
     except:
-        return render_template(
+        return render_templates(
             'index.html',
             prediction_text="❌ Invalid input. Please enter valid numbers.",
             form_data=request.form
