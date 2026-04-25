@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template
 import pickle
 import numpy as np
-import os
+from param import output
 
 app = Flask(__name__)
 
@@ -10,7 +10,7 @@ model = pickle.load(open("model.pkl", "rb"))
 
 @app.route('/')
 def home():
-    return render_templates("index.html")
+    return render_template("index.html")
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -51,7 +51,7 @@ def predict():
 
         # If errors exist → show them
         if errors:
-            return render_templates(
+            return render_template(
                 'index.html',
                 prediction_text="<br>".join(errors),
                 form_data=form_data
@@ -73,18 +73,18 @@ def predict():
         else:
             category = "High Price"
 
-        return render_templates(
+        return render_template(
             'index.html',
             prediction_text=f"Predicted Price: {formatted_price} ({category})",
             form_data=form_data
         )
 
     except:
-        return render_templates(
+        return render_template(
             'index.html',
             prediction_text="❌ Invalid input. Please enter valid numbers.",
             form_data=request.form
         )
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 10000)))
+    app.run(debug=True)
